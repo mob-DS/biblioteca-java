@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:8080/livros';
 let livrosGlobais = [];
 let abaAtual = 'LENDO';
 
-async function carregarLivros() {
+async function carregarLivros() { // função para buscar os livros cadastrados.
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error('Erro ao buscar dados da API');
