@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Estante de Obras</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Minha Estante de Leituras</h1>
+        
+        <div class="header-actions">
+            <!-- Abas Estilo Referência -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="LENDO" onclick="mudarAba('LENDO', this)">
+                    <span class="tab-icon">▶</span>
+                    <span>Seguindo</span>
+                </button>
+                <button class="tab-btn" data-tab="PENDENTE" onclick="mudarAba('PENDENTE', this)">
+                    <span class="tab-icon">🕒</span>
+                    <span>Pendente</span>
+                </button>
+                <button class="tab-btn" data-tab="FINALIZADO" onclick="mudarAba('FINALIZADO', this)">
+                    <span class="tab-icon">✔</span>
+                    <span>Concluído</span>
+                </button>
+                <button class="tab-btn" data-tab="FAVORITO" onclick="mudarAba('FAVORITO', this)">
+                    <span class="tab-icon">⭐</span>
+                    <span>Favoritos</span>
+                </button>
+            </div>
+            <button class="btn-novo" onclick="abrirModal()">➕ Adicionar Obra</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="estante-grid" class="grid-container">
+            <!-- Cards injetados via JS -->
+        </div>
+    </main>
+
+    <!-- Modal de Cadastro / Edição / Busca Online (Jikan API) -->
+    <div id="modal-livro" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="modal-titulo">Adicionar Nova Obra</h2>
+            
+            <!-- Busca Online Estável -->
+            <div class="search-mangadex-box">
+                <input type="text" id="input-busca-dex" placeholder="Pesquisar online (ex: Solo Leveling)...">
+                <button type="button" onclick="pesquisarOnline()">🔍 Buscar</button>
+            </div>
+            <div id="dex-results" class="dex-results-dropdown" style="display:none;"></div>
+
+            <form id="form-livro" onsubmit="salvarLivro(event)">
+                <input type="hidden" id="livro-id">
+
+                <div class="form-group">
+                    <label>Título *</label>
+                    <input type="text" id="livro-titulo" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Autor *</label>
+                        <input type="text" id="livro-autor" required value="Desconhecido">
+                    </div>
+                    <div class="form-group">
+                        <label>Status de Leitura *</label>
+                        <select id="livro-status">
+                            <option value="LENDO">Lendo</option>
+                            <option value="PENDENTE">Pendente</option>
+                            <option value="FINALIZADO">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo de Obra</label>
+                        <select id="livro-tipo">
+                            <option value="MANHWA">MANHWA</option>
+                            <option value="MANHUA">MANHUA</option>
+                            <option value="MANGA">MANGA</option>
+                            <option value="NOVEL">NOVEL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria Principal</label>
+                        <input type="text" id="livro-categoria" placeholder="Ex: Action, Fantasy">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Capítulos Lidos</label>
+                        <input type="number" id="livro-lidos" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Capítulos Totais</label>
+                        <input type="number" id="livro-total" value="0" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Link da Capa (URL)</label>
+                    <input type="text" id="livro-capa" placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label>Sinopse</label>
+                    <textarea id="livro-sinopse" rows="3"></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="livro-favorito"> ⭐ Marcar como Favorito
+                    </label>
+                </div>
+
+                <div class="modal-buttons">
+                    <!-- Botão de Deletar (Visível apenas na edição) -->
+                    <button type="button" id="btn-deletar" class="btn-deletar" style="display:none;" onclick="deletarLivro()">Excluir</button>
+                    <div class="modal-right-buttons">
+                        <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                        <button type="submit" class="btn-salvar">Salvar Obra</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="Script.js"></script>
+</body>
+</html>
